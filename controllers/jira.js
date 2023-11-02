@@ -16,12 +16,13 @@ async function createTestCase(req,res){
         }
     };
     let historias=req.body
-    for (let historia of historias.historias_usuarios) {
+    for (let historia of historias) {
         // Combinar descripción y criterios de aceptación
         let descripcionCompleta = historia.descripcion + "\n\nCriterios de Aceptación:\n";
-        for (let criterio of historia.criterios_aceptacion) {
+        for (let criterio of historia.criterios) {
             descripcionCompleta += "- " + criterio + "\n";
         }
+       // console.log(descripcionCompleta)
 
         // Construir datos para la petición
         const datos = {
@@ -55,7 +56,7 @@ async function createTestCase(req,res){
         try {
             const response = await axios.post(url, datos, configuracion);
             //let data =JSON.stringify(response)
-            console.log(`Testcase creado para la historia: ${historia.nombre} `);
+            console.log(`Testcase creado para la historia: ${historia.nombre}  `);
         } catch (error) {
             console.error(`Error creando testcase para la historia: ${historia.nombre}`);
             console.error(error);

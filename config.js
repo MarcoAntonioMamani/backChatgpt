@@ -1,6 +1,6 @@
 module.exports = {
     mail_jira: 'marcoantoniomamanichura2020@gmail.com',
-    toke_jira:'ATATT3xFfGF0FN-tFW2Gj3feCemdGlEmW91P2_J7IupdKPDktXSiHqpeL7LmQ1RdEtmZcS5syp68U5IGv11-kr9i3U9bSFpMz7_6cL6zfYN8isPth6jtTcT0N_bQwKxi9CMmAliuK9BbJfVbp_yTqshYs23H4Whw-wjZFKxuML3bgSF4wVJ3_SM=2C3C9D9B',
+    toke_jira:'ATATT3xFfGF0fp16f1ogeR_Knlr5v4RtWCDpDiTLtenvN4_FT5HZu1Tlq_vlT3nJ6ALqgFzbdjXtviJL2nzrs8hz3cNtBAFr91oMX2S8mJ8JAL4OPpWhvaMRok4IDVtW_1Zppthkt8fSQobPRPIQDpFigzNeP-OGMLxQgBcW0c0eISSL2o6WrP4=B5B79F3C',
     key_chatgpt: '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',
     model_chatgpt:'gpt-4',
     temperature: 0,
