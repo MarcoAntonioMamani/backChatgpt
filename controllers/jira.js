@@ -1,10 +1,9 @@
 const axios = require('axios');
 const config = require('../config');
-const { json } = require('body-parser');
 
 async function createTestCase(req,res){
     
-   // console.log(JSON.stringify(req.body))
+   console.log(JSON.stringify(req.body))
     console.log("------------------------------")
     const url = 'https://ecosistemas22.atlassian.net/rest/api/3/issue';
     const encodedToken = Buffer.from(`${config.mail_jira}:${config.toke_jira}`).toString('base64');
