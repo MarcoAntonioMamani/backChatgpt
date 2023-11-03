@@ -1,10 +1,10 @@
 module.exports = {
     mail_jira: 'marcoantoniomamanichura2020@gmail.com',
-    toke_jira:'ATATT3xFfGF0fp16f1ogeR_Knlr5v4RtWCDpDiTLtenvN4_FT5HZu1Tlq_vlT3nJ6ALqgFzbdjXtviJL2nzrs8hz3cNtBAFr91oMX2S8mJ8JAL4OPpWhvaMRok4IDVtW_1Zppthkt8fSQobPRPIQDpFigzNeP-OGMLxQgBcW0c0eISSL2o6WrP4=B5B79F3C',
-    key_chatgpt: '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',
+    toke_jira:'ATATT3xFfGF0UejoyBt5jhkcsII5PDlyu_Afevq9uwULwAz7a9tZEksfZ8WnYXpR4F2AJIZT7N4ftri_5XQXzFZVPXuEc9nNEDLTF87Bp6KSubDrsYVmQDxOhWNlEGWhJ9ndqVZoPHS2bZ1p8Lwmi0N9LUo-c48ReGXjnWULh1kHsXZZnLkeStM=A67E0E1F',
+    key_chatgpt: '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',
     model_chatgpt:'gpt-4',
     temperature: 0,
-    max_tokens: 1024,
+    max_tokens: 4096,
     url_chatgpt:'https://api.openai.com/v1/chat/completions',
     port: process.env.PORT || 3040,
     db: process.env.MSSQL || {server: '192.168.0.1',
