@@ -1,6 +1,7 @@
 const axios = require('axios');
 const config = require('../config');
-
+const excel = require('exceljs');
+const fs = require('fs');
 
   function isHistoriaUsuario(json) {
     return 'criterios' in json;
@@ -92,7 +93,69 @@ async function createTestCase(req,res){
     res.status(200).send({code:1,message: 'Todos los items en Jira fueron creados correctamente'});
 }
 
+async function ExpotTestCaseExcel(req,res){
+    
+    console.log(JSON.stringify(req.body))
+    console.log("------------------------------")
+    const workbook = new excel.Workbook();
+    const worksheet = workbook.addWorksheet('Casos de Prueba');
+    worksheet.columns = [
+        { header: 'titulo', key: 'titulo', width: 40 },
+        { header: 'descripcion', key: 'descripcion', width: 60 },
+        { header: 'preCondicion', key: 'preCondicion', width: 60 },
+        { header: 'pasos', key: 'pasos', width: 60 },
+        { header: 'resultadosEsperados', key: 'resultadosEsperados', width: 60 },
+      ];
+    
+    let historias = req.body;
+    for (let item of historias) {
+        let Precondicion = "";
+        for (let paso of item.preCondicion) {
+            Precondicion += "- " + paso + "\n";
+        }
+        let pasos = "";
+        for (let resultado of item.pasos) {
+            pasos += "- " + resultado + "\n";
+        }
+        let resultadosEsperados = "";
+        for (let resultado of item.resultadosEsperados) {
+            resultadosEsperados += "- " + resultado + "\n";
+        }
+
+        worksheet.addRow({
+            titulo: item.titulo,
+            descripcion: item.descripcion,
+            preCondicion: Precondicion,
+            pasos: pasos,
+            resultadosEsperados: resultadosEsperados,
+            // Agregar más columnas según tus necesidades
+        });
+     
+    }
+    const filename = `casos_de_prueba_${Date.now()}.xlsx`;
+    // Guardar el archivo Excel en una ubicación temporal
+    await workbook.xlsx.writeFile(filename);
+
+    // Configurar la respuesta HTTP para descargar el archivo Excel
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+
+
+    // Leer el archivo Excel y enviarlo como respuesta
+    const fileStream = fs.createReadStream(filename);
+    fileStream.pipe(res);
+
+    // Eliminar el archivo temporal después de enviarlo como respuesta
+    fileStream.on('end', () => {
+        fs.unlinkSync(filename);
+    });
+
+    //res.status(200).send({code:1,message: 'Todos los items en Jira fueron creados correctamente'});
+}
+
+
 
 module.exports = {
-    createTestCase
+    createTestCase,
+    ExpotTestCaseExcel
 }

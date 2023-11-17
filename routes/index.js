@@ -8,4 +8,5 @@ const api = express.Router()
 
 api.post('/chagpt/message', chat.sendMessage)
 api.post('/chagpt/jira', jira.createTestCase)
+api.post('/chagpt/excel', jira.ExpotTestCaseExcel)
 module.exports = api

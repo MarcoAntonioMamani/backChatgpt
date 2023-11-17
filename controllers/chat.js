@@ -1,29 +1,44 @@
 const config = require('../config')
 let jsonHistoriaUsuario=require('../json/HistoriaUsuario')
 let jsonCasosPruebas=require('../json/CasosPrueba')
+let jsonCriterioAceptacion;
 const OpenAI= require("openai");
 const openai = new OpenAI({apiKey: `${config.key_chatgpt}`});
 
-jsonHistoriaUsuario=`[{"historiaDeUsuario": {
+jsonHistoriaUsuario=`{
+  "historiaDeUsuario": [
+    {
       "como": "Cliente",
       "quiero": "poder eliminar productos de mis favoritos en el módulo correspondiente",
-      "para": "poder gestionar la lista de productos favoritos de manera personalizada y eficiente",
-      "criteriosDeAceptacion": [
-        {
-          "dado": "soy un Cliente y tengo varios productos en mi lista de favoritos",
-          "cuando": "intento eliminar múltiples productos de mi lista de favoritos",
-          "entonces": "los productos seleccionados se eliminan de la lista de favoritos"
-        },
-        {
-          "dado": "soy un Cliente y tengo productos en mi lista de favoritos",
-          "cuando": "intento eliminar un producto de mi lista de favoritos",
-          "entonces": "el producto seleccionado se elimina de la lista de favoritos sin requerir confirmación adicional"
-        },
-        {
-          "dado": "soy un Cliente y he eliminado un producto de mi lista de favoritos",
-          "cuando": "la acción de eliminación se completa con éxito",
-          "entonces": "recibo una confirmación visual o un mensaje de éxito que indica que el producto se ha eliminado correctamente"
-        }]}}]`
+      "para": "poder gestionar la lista de productos favoritos de manera personalizada y eficiente"
+    },
+    {
+      "como": "Cliente",
+      "quiero": "poder eliminar productos de mis favoritos en el módulo correspondiente",
+      "para": "poder gestionar la lista de productos favoritos de manera personalizada y eficiente"
+    }
+  ]
+}`
+
+jsonCriterioAceptacion=`{
+  "criteriosDeAceptacion": [
+    {
+      "dado": "soy un Cliente y tengo varios productos en mi lista de favoritos",
+      "cuando": "intento eliminar múltiples productos de mi lista de favoritos",
+      "entonces": "los productos seleccionados se eliminan de la lista de favoritos"
+    },
+    {
+      "dado": "soy un Cliente y tengo productos en mi lista de favoritos",
+      "cuando": "intento eliminar un producto de mi lista de favoritos",
+      "entonces": "el producto seleccionado se elimina de la lista de favoritos sin requerir confirmación adicional"
+    },
+    {
+      "dado": "soy un Cliente y he eliminado un producto de mi lista de favoritos",
+      "cuando": "la acción de eliminación se completa con éxito",
+      "entonces": "recibo una confirmación visual o un mensaje de éxito que indica que el producto se ha eliminado correctamente"
+    }
+  ]
+}`
 
 jsonCasosPruebas=`{"casos_prueba": [
     {
@@ -84,28 +99,42 @@ jsonCasosPruebas=`{"casos_prueba": [
   }
 
   function obtenerDataJson(tipo, cantidadRespuestas, mensaje) {
-    if (tipo == 1) {
-        return [
+    switch (tipo) {
+        case 1:
+            return [
                 {
-                  "role": "system",
-                  "content": `Eres un experto en crear historia de usuarios el cual siempre responderas en este formato que tiene 1 historia de usuario: ${jsonHistoriaUsuario}`
-                },  
-                {
-                    role: "user",
-                    content: `segun a esa estuctura dame  ${cantidadRespuestas} ejemplos de historia de usuario de esta necesidad: ${mensaje} no aumentes la palabra json en la respuesta ni ningun otra solo devolveme en formato del ejemplo que tiene el system`
-                }
-            ];
-    } else {
-        return [
-                {
-                  "role": "system",
-                  "content": `Eres un experto en crear casos de prueba el cual siempre responderas en este formato que tiene 1 casos de pruebas: ${jsonCasosPruebas}`
+                    "role": "system",
+                    "content": `Eres un experto en crear historia de usuarios el cual siempre responderás en este formato que tiene 1 historia de usuario: ${jsonHistoriaUsuario}`
                 },
                 {
-                    role: "user",
-                    content: `segun a esa estuctura dame ${cantidadRespuestas} ejemplos de casos de pruebas de esta necesidad: ${mensaje}.`
+                    "role": "user",
+                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de historia de usuario de esta necesidad: ${mensaje} no aumentes la palabra json en la respuesta ni ninguna otra, solo devuélveme en formato del ejemplo que tiene el sistema`
                 }
             ];
+        case 2:
+            return [
+                {
+                    "role": "system",
+                    "content": `Eres un experto en crear casos de prueba el cual siempre responderás en este formato que tiene 1 caso de pruebas: ${jsonCasosPruebas}`
+                },
+                {
+                    "role": "user",
+                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de casos de pruebas de esta necesidad: ${mensaje}.`
+                }
+            ];
+            case 3:
+            return [
+                {
+                    "role": "system",
+                    "content": `Eres un experto en crear criterios de Aceptacion el cual siempre responderás en este formato: ${jsonCriterioAceptacion}`
+                },
+                {
+                    "role": "user",
+                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de criterios de aceptacion de esta historia de usuario: ${mensaje}.`
+                }
+            ];
+        default:
+            return []; // Tipo no válido
     }
 }
 
