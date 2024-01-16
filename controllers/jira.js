@@ -102,7 +102,7 @@ async function ExpotTestCaseExcel(req,res){
     worksheet.columns = [
         { header: 'titulo', key: 'titulo', width: 40 },
         { header: 'descripcion', key: 'descripcion', width: 60 },
-        { header: 'preCondicion', key: 'preCondicion', width: 60 },
+        { header: 'precondiciones', key: 'preCondicion', width: 60 },
         { header: 'pasos', key: 'pasos', width: 60 },
         { header: 'resultadosEsperados', key: 'resultadosEsperados', width: 60 },
       ];
@@ -110,7 +110,7 @@ async function ExpotTestCaseExcel(req,res){
     let historias = req.body;
     for (let item of historias) {
         let Precondicion = "";
-        for (let paso of item.preCondicion) {
+        for (let paso of item.precondiciones) {
             Precondicion += "- " + paso + "\n";
         }
         let pasos = "";
@@ -118,12 +118,12 @@ async function ExpotTestCaseExcel(req,res){
             pasos += "- " + resultado + "\n";
         }
         let resultadosEsperados = "";
-        for (let resultado of item.resultadosEsperados) {
+        for (let resultado of item.resultados) {
             resultadosEsperados += "- " + resultado + "\n";
         }
 
         worksheet.addRow({
-            titulo: item.titulo,
+            titulo: item.nombre,
             descripcion: item.descripcion,
             preCondicion: Precondicion,
             pasos: pasos,

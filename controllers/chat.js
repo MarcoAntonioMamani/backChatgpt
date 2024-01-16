@@ -61,7 +61,8 @@ jsonCasosPruebas=`{"casos_prueba": [
   async function sendMessage(req,res){
 
     console.log(req.body.mensaje)
-
+    console.log(req.body)
+    //console.log(obtenerDataJson(req.body.tipo,req.body.cantidadRespuestas,req.body.mensaje))
       try {
        // const completion = await openai.chat.completions.create(obtenerDataJson(req.body.tipo,req.body.cantidadRespuestas,req.body.mensaje)  );
         const completion = await openai.chat.completions.create({
@@ -99,6 +100,19 @@ jsonCasosPruebas=`{"casos_prueba": [
   }
 
   function obtenerDataJson(tipo, cantidadRespuestas, mensaje) {
+    // Verificar y convertir tipo a entero si es una cadena
+    if (typeof tipo === 'string') {
+        tipo = parseInt(tipo, 10);
+
+        // Verificar si la conversión fue exitosa
+        if (isNaN(tipo)) {
+            console.error("Error: El tipo no es un número válido.");
+            return []; // Tipo no válido
+        }
+    }
+
+    // Resto de la función sigue igual, pero ahora tipo siempre es un entero
+
     switch (tipo) {
         case 1:
             return [
@@ -119,10 +133,10 @@ jsonCasosPruebas=`{"casos_prueba": [
                 },
                 {
                     "role": "user",
-                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de casos de pruebas de esta necesidad: ${mensaje}.`
+                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de casos de pruebas de esta necesidad: ${mensaje}  no aumentes la palabra json en la respuesta ni ninguna otra, solo devuélveme en formato del ejemplo que tiene el sistema`
                 }
             ];
-            case 3:
+        case 3:
             return [
                 {
                     "role": "system",
@@ -130,13 +144,15 @@ jsonCasosPruebas=`{"casos_prueba": [
                 },
                 {
                     "role": "user",
-                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de criterios de aceptacion de esta historia de usuario: ${mensaje}.`
+                    "content": `según a esa estructura dame ${cantidadRespuestas} ejemplos de criterios de aceptacion de esta historia de usuario: ${mensaje}  no aumentes la palabra json en la respuesta ni ninguna otra, solo devuélveme en formato del ejemplo que tiene el sistema`
                 }
             ];
         default:
+            console.error("Error: Tipo no válido.");
             return []; // Tipo no válido
     }
 }
+
 
   module.exports = {
     sendMessage
